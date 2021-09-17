@@ -5,20 +5,9 @@ import torchvision.models as models
 
 # VGG16-based Style Model
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
-t = torch.cuda.get_device_properties(0).total_memory
-r = torch.cuda.memory_reserved(0)
-a = torch.cuda.memory_allocated(0)
-print(t, r, a)
 vgg16 = models.vgg16(pretrained=True).features
-t = torch.cuda.get_device_properties(0).total_memory
-r = torch.cuda.memory_reserved(0)
-a = torch.cuda.memory_allocated(0)
-print("After", t, r, a)
 
 def calc_styles(imgs):
-    # device = torch.device('cpu')
-    # print(imgs.shape)
-    # print(f"MIN: {torch.min(imgs)}, MAX: {torch.max(imgs)}")
     style_layers = [1, 6, 11, 18, 25]
     mean = torch.tensor([0.485, 0.456, 0.406])[:,None,None]
     std = torch.tensor([0.229, 0.224, 0.225])[:,None,None]
@@ -27,7 +16,6 @@ def calc_styles(imgs):
     for i, layer in enumerate(vgg16[:max(style_layers)+1]):
         x = layer(x)
         if i in style_layers:
-            print("Style Layer")
             h, w = x.shape[-2:]
             y = x.clone()  # workaround for pytorch in-place modification bug(?)
             gram = torch.einsum('bchw, bdhw -> bcd', y, y) / (h*w)

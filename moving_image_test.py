@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import imageio
 
 max_size = 64
-test_img = Image.open("pattern.jpg")
+test_img = Image.open("leaves.jpg")
 test_img.thumbnail((max_size, max_size), Image.ANTIALIAS)
 test_img = np.float32(np.asarray(test_img)) / 255.0
 print(test_img.shape)

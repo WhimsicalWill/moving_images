@@ -13,10 +13,6 @@ def to_nchw(img):
     return img.permute(0, 3, 1, 2)
 
 def find_nca(style_img, size):
-    t = torch.cuda.get_device_properties(0).total_memory
-    r = torch.cuda.memory_reserved(0)
-    a = torch.cuda.memory_allocated(0)
-    print("NCA", t, r-a)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
@@ -43,10 +39,6 @@ def find_nca(style_img, size):
                 x[:1] = ca.seed(1)
         step_n = np.random.randint(32, 96)
         for k in range(step_n):
-            t = torch.cuda.get_device_properties(0).total_memory
-            r = torch.cuda.memory_reserved(0)
-            a = torch.cuda.memory_allocated(0)
-            print(k, t, r-a)
             x = ca(x)
         imgs = to_rgb(x)
         styles = calc_styles(imgs)
