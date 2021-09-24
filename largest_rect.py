@@ -38,7 +38,6 @@ def histogram_rect(hist):
             # enforce a h:w ratio of at least 3:5
             ratio = min(ratio, 1/ratio)
             if area > max_area and ratio >= .6:
-                print(ratio, area)
                 max_area = area
                 if len(stack) == 0:
                     x0 = 0
@@ -56,7 +55,6 @@ def histogram_rect(hist):
             ratio = hist[curr_max] / (i - 1 - stack[-1])
         ratio = min(ratio, 1/ratio)
         if area > max_area and ratio >= .6:
-            print(ratio, area)
             max_area = area
             if len(stack) == 0:
                 x0 = 0
