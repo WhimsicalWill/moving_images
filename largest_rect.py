@@ -21,7 +21,8 @@ def get_largest_rect(grid):
 def histogram_rect(hist):
     # can improve this by ignoring 0-height bars
     stack = []
-    x0 = x1 = height = max_area = i = 0
+    x0 = x1 = height = i = 0
+    max_area = 1
     while i < len(hist):
         if len(stack) == 0 or hist[stack[-1]] <= hist[i]:
             stack.append(i)
@@ -30,13 +31,14 @@ def histogram_rect(hist):
             curr_max = stack.pop()
             if len(stack) == 0:
                 area = hist[curr_max] * i
+                ratio = hist[curr_max] / i
             else:
                 area = hist[curr_max] * (i - 1 - stack[-1])
+                ratio = hist[curr_max] / (i - 1 - stack[-1])
             # enforce a h:w ratio of at least 3:5
-            ratio = hist[curr_max] / (i - 1 - stack[-1])
             ratio = min(ratio, 1/ratio)
             if area > max_area and ratio >= .6:
-                print(ratio)
+                print(ratio, area)
                 max_area = area
                 if len(stack) == 0:
                     x0 = 0
@@ -47,13 +49,14 @@ def histogram_rect(hist):
     while len(stack) > 0:
         curr_max = stack.pop()
         if len(stack) == 0:
-            area = hist[curr_max] * (i - 1)
+            area = hist[curr_max] * i
+            ratio = hist[curr_max] / i
         else:
             area = hist[curr_max] * (i - 1 - stack[-1])
-        ratio = hist[curr_max] / (i - 1 - stack[-1])
+            ratio = hist[curr_max] / (i - 1 - stack[-1])
         ratio = min(ratio, 1/ratio)
         if area > max_area and ratio >= .6:
-            print(ratio)
+            print(ratio, area)
             max_area = area
             if len(stack) == 0:
                 x0 = 0
